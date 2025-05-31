@@ -1,105 +1,130 @@
-# FastAPI ToDo App Project
+# Docker Container Security Falcon
 
-## Overview
-
-This is a hands-on project built using **FastAPI**, a modern, high-performance Python framework for building APIs. The app is a minimal **ToDo API** designed to demonstrate the key advantages of using FastAPI over traditional frameworks like Flask or Django.
-
-This README follows the tutorial by Travis Media titled *"Why You NEED To Learn FastAPI | Hands-On Project"*, where we build a ToDo application while showcasing 7 core reasons to learn and use FastAPI.
+A production-ready FastAPI application containerised using secure Docker practices, scanned for vulnerabilities with Trivy, and integrated with GitHub Actions for automated CVE analysis, Dockerfile linting, and Docker Hub publishing.
 
 ---
 
-## Why FastAPI?
+## Purpose and Project Overview
 
-Modern software often requires APIs that are flexible, scalable, and easy to integrate with multiple platforms (web, mobile, desktop). FastAPI provides a clean solution:
+This project demonstrates the secure container lifecycle of a Python-based web API, showcasing practical DevSecOps practices as learnt from Bret Fisher’s [Docker Mastery](https://www.udemy.com/course/docker-mastery/) course.
 
-* ✅ Maintain a **single backend** that supports multiple frontends
-* ✅ Promote clean code separation (routes, models, logic)
-* ✅ Boost productivity with built-in developer tools
+The main objectives are:
 
-> "FastAPI is like the USB port for your backend — once it's in place, anything can plug in and work."
+* Apply Docker security best practices (e.g., non-root user, image and package pinning).
+* Use automated CVE scanning and remediation workflows.
+* Implement CI automation for secure container builds.
+* Gain hands-on confidence in container hardening and publishing pipelines.
 
----
+While my primary goal is  cloud engineering, I believe a strong foundation in *reliable and effective* development and operational practices is essential. Secure software delivery, vulnerability scanning, and infrastructure automation are core competencies for modern cloud engineering roles.
 
-## The 7 Advantages of FastAPI (Demonstrated in this Project)
-
-1. **Plain Python Syntax**
-
-   * FastAPI is intuitive and readable.
-   * Route definitions are clean and require no boilerplate.
-
-2. **Async Support Built-in**
-
-   * FastAPI uses ASGI for asynchronous request handling out of the box.
-   * Great for performance when handling concurrent I/O.
-
-3. **Data Validation with Pydantic**
-
-   * Define data models using `pydantic.BaseModel`
-   * Automatically validate and parse input data
-
-4. **Typed Python**
-
-   * Use standard Python type hints for inputs and outputs
-   * Improves readability, autocomplete, and documentation
-
-5. **JSON Error Responses**
-
-   * All errors return structured, developer-friendly JSON
-
-6. **Built-in Authentication Support**
-
-   * HTTP Basic Auth, OAuth2, JWT and API Keys
-
-7. **Auto-generated Documentation**
-
-   * Swagger UI: `/docs`
-   * ReDoc: `/redoc`
+This project reflects my understanding of real-world DevSecOps automation, applying industry standards to secure container workflows and CI/CD pipelines.
 
 ---
 
-##  Project Features
+## Key Security Features (Following security best practices)
 
-* Create, Read, Update, and Delete ToDo items
-* All data is handled in-memory (for simplicity)
-* Typed request/response models with `pydantic`
-* Uses `uvicorn` as ASGI server
+* **Explicit base image**: `python:3.11.12-slim` to ensure minimal and reproducible builds.
+* **Non-root user**: Reduces risk from privilege escalation.
+* **Pinned dependencies**: All Python and system packages are locked for reproducibility and auditability.
+* **Trivy scanning**: Detects known CVEs by severity.
+* **Hadolint linting**: Enforces Dockerfile security and style best practices.
+* **CI automation**: GitHub Actions pipeline ensures consistency and security on each push or PR.
+
+---
 
 ## Technologies Used
 
-| Component       | Tech                                             |
-| --------------- | ------------------------------------------------ |
-| API Framework   | [FastAPI](https://fastapi.tiangolo.com/)         |
-| Server          | [Uvicorn](https://www.uvicorn.org/)              |
-| Data Validation | [Pydantic](https://pydantic-docs.helpmanual.io/) |
-| Language        | Python 3.10+                                     |
+* **FastAPI** – Web framework for asynchronous Python APIs
+* **Docker** – Containerisation and runtime environment
+* **Trivy** – CVE scanner
+* **Hadolint** – Dockerfile linter
+* **GitHub Actions** – CI/CD pipeline
 
 ---
 
 ## Folder Structure
 
 ```
-fastapi-project/
+docker-security-falcon/
 ├── app/
 │   ├── main.py
 │   └── models.py
-└── README.md
-
+├── .github/
+│   └── workflows/
+│       └── container-security.yaml
+├── reports/
+│   ├── trivy-report.txt
+│   └── trivy-scan.txt
+├── Dockerfile
+├── README.md
+├── SECURITY.md
+└── requirements.txt
 ```
 
 ---
 
-## How to Run the Project
+## Build & Run the App Locally
 
 ```bash
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
+# Build the image
+$ docker build -t falcon-api .
 
-# Install dependencies
-pip install fastapi uvicorn
+# Run the container
+$ docker run -d -p 8000:8000 falcon-api
 
-# Run the app
-uvicorn main:app --reload
+# Access the FastAPI docs
+http://localhost:8000/docs
 ```
 
-Visit [http://localhost:8000/docs](http://localhost:8000/docs) to access the Swagger UI.
+---
+
+## GitHub Actions CI/CD Pipeline
+
+**Trigger**: Runs on push to `main` or any pull request.
+
+---
+
+### CI Steps Summary
+
+* Checkout source code
+* Set up Docker Buildx
+* Log in to Docker Hub
+* Build and tag image
+* Run Trivy CVE scan
+* Upload Trivy report as an artifact
+* Lint Dockerfile with Hadolint
+
+---
+
+### Workflow Snippet – Trivy CVE Scanner (`.github/workflows/container-security.yaml`)
+
+```yaml
+- name: Run Trivy CVE scanner
+  uses: aquasecurity/trivy-action@0.14.0
+  with:
+    image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:${{ github.sha }}
+    format: table
+    output: reports/trivy-report.txt
+    severity: CRITICAL,HIGH
+```
+
+---
+
+## Trivy CVE Summary (as of last scan)
+
+```
+Total Vulnerabilities Found: 6
+  - CRITICAL: 2
+  - HIGH: 4
+
+Scan completed successfully. Full report: /reports/trivy-report.txt
+```
+
+---
+
+## Docker Image
+
+* **Docker Hub**: [zermann/falcon-api](https://hub.docker.com/repository/docker/zermann/falcon-api/general)
+* **Tags**: `latest`, `${{ github.sha }}`
+
+---

@@ -1,0 +1,1 @@
+# Note: If no Trivy CVE report appears, it means that no vulnerabilities of severity CRITICAL or HIGH were detected.
