@@ -1,0 +1,7 @@
+name: Container Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:

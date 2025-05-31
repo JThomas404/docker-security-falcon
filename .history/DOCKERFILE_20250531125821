@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN addgroup --system pygroup && adduser --system --ingroup pygroup pyuser
+
+COPY ./app /app/app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN chown -R pyuser:pygroup /app
+
+USER pyuser

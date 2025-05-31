@@ -1,0 +1,7 @@
+fastapi==0.111.0
+uvicorn==0.34.2
+pydantic==2.11.5
+anyio==4.9.0
+click==8.2.1
+h11==0.16.0
+setuptools==65.5.1
