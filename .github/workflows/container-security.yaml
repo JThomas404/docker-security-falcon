@@ -47,6 +47,15 @@ jobs:
           format: table
           output: reports/trivy-report.txt
           severity: CRITICAL,HIGH
+      
+      - name: Display Trivy Report
+        run: cat reports/trivy-report.txt
+
+      - name: Upload Trivy Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: reports/trivy-report.txt
 
       - name: Lint Dockerfile with Hadolint
         uses: hadolint/hadolint-action@v3.1.0
