@@ -158,7 +158,7 @@ Scan completed successfully. Full report: /reports/trivy-report.txt
 
 ## Docker Image
 
-* **Docker Hub**: [zermann/falcon-api](https://hub.docker.com/r/zermann/falcon-api)
+* **Docker Hub**: [zermann/falcon-api](https://hub.docker.com/r/zermann/falcon-api/tags)
 * **Tags**: `latest`, `${{ github.sha }}`
 
 ---
