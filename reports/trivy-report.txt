@@ -1,1 +1,23 @@
-# Note: If no Trivy CVE report appears, it means that no vulnerabilities of severity CRITICAL or HIGH were detected.
+zermann/falcon-api:88f756b682ad497ae24987e5fbb691ab67bf9351 (debian 12.11)
+==========================================================================
+Total: 4 (HIGH: 3, CRITICAL: 1)
+
+┌───────────┬────────────────┬──────────┬──────────────┬───────────────────┬───────────────┬───────────────────────────────────────────────────────────┐
+│  Library  │ Vulnerability  │ Severity │    Status    │ Installed Version │ Fixed Version │                           Title                           │
+├───────────┼────────────────┼──────────┼──────────────┼───────────────────┼───────────────┼───────────────────────────────────────────────────────────┤
+│ libc-bin  │ CVE-2025-4802  │ HIGH     │ affected     │ 2.36-9+deb12u10   │               │ glibc: static setuid binary dlopen may incorrectly search │
+│           │                │          │              │                   │               │ LD_LIBRARY_PATH                                           │
+│           │                │          │              │                   │               │ https://avd.aquasec.com/nvd/cve-2025-4802                 │
+├───────────┤                │          │              │                   ├───────────────┤                                                           │
+│ libc6     │                │          │              │                   │               │                                                           │
+│           │                │          │              │                   │               │                                                           │
+│           │                │          │              │                   │               │                                                           │
+├───────────┼────────────────┤          │              ├───────────────────┼───────────────┼───────────────────────────────────────────────────────────┤
+│ perl-base │ CVE-2023-31484 │          │              │ 5.36.0-7+deb12u2  │               │ perl: CPAN.pm does not verify TLS certificates when       │
+│           │                │          │              │                   │               │ downloading distributions over HTTPS...                   │
+│           │                │          │              │                   │               │ https://avd.aquasec.com/nvd/cve-2023-31484                │
+├───────────┼────────────────┼──────────┼──────────────┼───────────────────┼───────────────┼───────────────────────────────────────────────────────────┤
+│ zlib1g    │ CVE-2023-45853 │ CRITICAL │ will_not_fix │ 1:1.2.13.dfsg-1   │               │ zlib: integer overflow and resultant heap-based buffer    │
+│           │                │          │              │                   │               │ overflow in zipOpenNewFileInZip4_6                        │
+│           │                │          │              │                   │               │ https://avd.aquasec.com/nvd/cve-2023-45853                │
+└───────────┴────────────────┴──────────┴──────────────┴───────────────────┴───────────────┴───────────────────────────────────────────────────────────┘
