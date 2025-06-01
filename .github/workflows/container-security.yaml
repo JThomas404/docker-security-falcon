@@ -30,24 +30,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:latest,${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:${{ github.sha }}
 
-      - name: Create reports directory
+      - name: Create Reports Directory
         run: mkdir -p reports
 
-      - name: Run Trivy CVE scanner
+      - name: Run Trivy CVE Scanner
         uses: aquasecurity/trivy-action@0.14.0
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/falcon-api:${{ github.sha }}
           format: table
           output: reports/trivy-report.txt
           severity: CRITICAL,HIGH
-      
+
       - name: Display Trivy Report
         run: cat reports/trivy-report.txt
 
@@ -60,4 +62,4 @@ jobs:
       - name: Lint Dockerfile with Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ./Dockerfile
+          dockerfile: Dockerfile
