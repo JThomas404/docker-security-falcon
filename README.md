@@ -1,4 +1,4 @@
-# Docker Container Security Falcon
+# Docker Container Security Falcon (Phase 1)
 
 This project was designed to take a [**FastAPI application**](https://github.com/JThomas404/fastapi-project) and containerise the API with Docker best practices, scanned for vulnerabilities using Trivy, and integrated with GitHub Actions for automated CVE analysis, Dockerfile linting, and lastly publishing the image to Docker Hub.
 
